@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:grad_project/screens/SignUpScreen.dart';
 import 'package:iconsax/iconsax.dart';
 
 class SignIn_Screen extends StatelessWidget {
   const SignIn_Screen({super.key});
+  static String id = 'signIn';
 
   @override
   Widget build(BuildContext context) {
@@ -109,9 +111,7 @@ class SignIn_Screen extends StatelessWidget {
                               Text('Remeber me'),
                             ],
                           ),
-                          TextButton(
-                              onPressed: () {},
-                              child: const Text('Forgot Password?'))
+                          
                         ],
                       ),
                       const SizedBox(
@@ -137,7 +137,9 @@ class SignIn_Screen extends StatelessWidget {
                         height: 50,
                         width: double.infinity,
                         child: OutlinedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushNamed(context, SignUpScreen.id);
+                          },
                           child: Text(
                             'Create account',
                             style: TextStyle(
@@ -154,54 +156,6 @@ class SignIn_Screen extends StatelessWidget {
                 ),
               ),
               //divider
-
-              Row(
-                children: [
-                  Flexible(
-                    child: Divider(
-                      color: Colors.grey,
-                      thickness: 0.5,
-                      indent: 60,
-                      endIndent: 5,
-                    ),
-                  ),
-                  Text('Or Sign In With'),
-                  Flexible(
-                    child: Divider(
-                      color: Colors.grey,
-                      thickness: 0.5,
-                      indent: 5,
-                      endIndent: 60,
-                    ),
-                  )
-                ],
-              ),
-
-              SizedBox(
-                height: 12,
-              ),
-
-              //footer
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey.shade300),
-                      borderRadius: BorderRadius.circular(100),
-                    ),
-                    child: IconButton(
-                      onPressed: () {},
-                      icon: const Image(
-                        height: 24,
-                        width: 24,
-                        image: AssetImage('assets/animation/googleicon.png'),
-                      ),
-                    ),
-                  )
-                ],
-              )
             ],
           ),
         ),

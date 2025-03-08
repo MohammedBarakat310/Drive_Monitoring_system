@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/get_navigation.dart';
+import 'package:grad_project/screens/SignInScreen.dart';
+import 'package:grad_project/screens/SignUpScreen.dart';
 import 'package:grad_project/screens/onBoarding.dart';
 import 'package:grad_project/screens/splash_screen.dart';
 
@@ -18,7 +20,9 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       routes: {
         Splash_Screen.id: (context) => Splash_Screen(),
-        onboardingScreen.id: (context) => onboardingScreen()
+        onboardingScreen.id: (context) => onboardingScreen(),
+        SignIn_Screen.id: (context) => SignIn_Screen(),
+        SignUpScreen.id: (context) => SignUpScreen()
       },
       initialRoute: Splash_Screen.id,
     );
