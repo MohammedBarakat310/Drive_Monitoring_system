@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:grad_project/components/SpecialButton.dart';
+import 'package:grad_project/components/TextFormField.dart';
+import 'package:grad_project/screens/AddProfileScreen.dart';
 import 'package:iconsax/iconsax.dart';
 
 class SignUpScreen extends StatelessWidget {
@@ -11,9 +14,10 @@ class SignUpScreen extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
-        iconTheme: IconThemeData(color: Colors.black),
+        iconTheme: const IconThemeData(color: Colors.black),
       ),
       body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
         child: Padding(
           padding: const EdgeInsets.all(24),
           child: Column(
@@ -32,49 +36,25 @@ class SignUpScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
+                    const Row(
                       children: [
                         //first name
                         Expanded(
-                          child: TextFormField(
-                            decoration: const InputDecoration(
-                              prefixIcon: Icon(Iconsax.user),
-                              labelText: 'First Name',
-                              labelStyle: TextStyle(
-                                color: Colors.black,
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(8),
-                                ),
-                                borderSide:
-                                    BorderSide(color: Colors.black, width: 1.5),
-                              ),
-                            ),
+                          child: specialTextField(
+                            label: 'First Name',
+                            mainIcon: Iconsax.user,
                           ),
                         ),
 
-                        const SizedBox(
+                        SizedBox(
                           width: 16,
                         ),
 
                         //last name
                         Expanded(
-                          child: TextFormField(
-                            decoration: const InputDecoration(
-                              prefixIcon: Icon(Iconsax.user),
-                              labelText: 'Last Name',
-                              labelStyle: TextStyle(
-                                color: Colors.black,
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(8),
-                                ),
-                                borderSide:
-                                    BorderSide(color: Colors.black, width: 1.5),
-                              ),
-                            ),
+                          child: specialTextField(
+                            label: 'Last Name',
+                            mainIcon: Iconsax.user,
                           ),
                         ),
                       ],
@@ -83,45 +63,21 @@ class SignUpScreen extends StatelessWidget {
                       height: 16,
                     ),
                     //username
-                    TextFormField(
-                      expands: false,
-                      decoration: const InputDecoration(
-                        prefixIcon: Icon(Iconsax.user_edit),
-                        labelText: 'User Name',
-                        labelStyle: TextStyle(
-                          color: Colors.black,
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(8),
-                          ),
-                          borderSide:
-                              BorderSide(color: Colors.black, width: 1.5),
-                        ),
-                      ),
+
+                    const specialTextField(
+                      label: 'User Name',
+                      mainIcon: Iconsax.user_edit,
                     ),
+
                     const SizedBox(
                       height: 16,
                     ),
 
                     //E-mail
 
-                    TextFormField(
-                      expands: false,
-                      decoration: const InputDecoration(
-                        prefixIcon: Icon(Iconsax.direct),
-                        labelText: 'E-Mail',
-                        labelStyle: TextStyle(
-                          color: Colors.black,
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(8),
-                          ),
-                          borderSide:
-                              BorderSide(color: Colors.black, width: 1.5),
-                        ),
-                      ),
+                    const specialTextField(
+                      label: 'E-Mail',
+                      mainIcon: Iconsax.direct,
                     ),
 
                     const SizedBox(
@@ -129,22 +85,9 @@ class SignUpScreen extends StatelessWidget {
                     ),
 
                     //car number
-                    TextFormField(
-                      expands: false,
-                      decoration: const InputDecoration(
-                        prefixIcon: Icon(Iconsax.car),
-                        labelText: 'Car Number',
-                        labelStyle: TextStyle(
-                          color: Colors.black,
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(8),
-                          ),
-                          borderSide:
-                              BorderSide(color: Colors.black, width: 1.5),
-                        ),
-                      ),
+                    const specialTextField(
+                      label: 'Car Number',
+                      mainIcon: Iconsax.car,
                     ),
 
                     const SizedBox(
@@ -153,26 +96,12 @@ class SignUpScreen extends StatelessWidget {
 
                     //password
 
-                    TextFormField(
-                      obscureText: true,
-                      decoration: const InputDecoration(
-                        prefixIcon: Icon(Iconsax.password_check),
-                        labelText: 'Password',
-                        suffixIcon: Icon(Iconsax.eye_slash),
-                        labelStyle: TextStyle(
-                          color: Colors.black,
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(8),
-                          ),
-                          borderSide:
-                              BorderSide(color: Colors.black, width: 1.5),
-                        ),
-                      ),
+                    const specialTextField(
+                      label: 'Password',
+                      mainIcon: Iconsax.password_check,
+                      secondIcon: Iconsax.eye_slash,
                     ),
-
-                    SizedBox(
+                    const SizedBox(
                       height: 30,
                     ),
 
@@ -227,25 +156,17 @@ class SignUpScreen extends StatelessWidget {
                       ],
                     ),
 
-                    SizedBox(
+                    const SizedBox(
                       height: 30,
                     ),
 
                     //sign up button
 
-                    SizedBox(
-                      width: double.infinity,
-                      height: 50,
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        child: Text(
-                          'Sign Up',
-                          style: TextStyle(
-                            color: Colors.black.withOpacity(.8),
-                          ),
-                        ),
-                      ),
-                    ),
+                    specialButton(
+                      function: () =>
+                          Navigator.pushNamed(context, AddProfile.id),
+                      text: 'Continue',
+                    )
                   ],
                 ),
               )

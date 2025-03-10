@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/get_navigation.dart';
+import 'package:grad_project/screens/AddProfileScreen.dart';
 import 'package:grad_project/screens/SignInScreen.dart';
 import 'package:grad_project/screens/SignUpScreen.dart';
 import 'package:grad_project/screens/onBoarding.dart';
@@ -19,10 +20,11 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       routes: {
-        Splash_Screen.id: (context) => Splash_Screen(),
-        onboardingScreen.id: (context) => onboardingScreen(),
-        SignIn_Screen.id: (context) => SignIn_Screen(),
-        SignUpScreen.id: (context) => SignUpScreen()
+        Splash_Screen.id: (context) => const Splash_Screen(),
+        onboardingScreen.id: (context) => const onboardingScreen(),
+        SignIn_Screen.id: (context) => const SignIn_Screen(),
+        SignUpScreen.id: (context) => const SignUpScreen(),
+        AddProfile.id: (context) => const AddProfile(),
       },
       initialRoute: Splash_Screen.id,
     );

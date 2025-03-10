@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:grad_project/components/TextFormField.dart';
 import 'package:grad_project/screens/SignUpScreen.dart';
 import 'package:iconsax/iconsax.dart';
 
+// ignore: camel_case_types
 class SignIn_Screen extends StatelessWidget {
   const SignIn_Screen({super.key});
   static String id = 'signIn';
@@ -11,8 +13,9 @@ class SignIn_Screen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Color(0xffFFFFFF),
       body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
         child: Padding(
-          padding: EdgeInsets.only(
+          padding: const EdgeInsets.only(
             top: 56,
             bottom: 24,
             right: 24,
@@ -26,7 +29,7 @@ class SignIn_Screen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Image(
+                    const Image(
                       image: AssetImage(
                           'assets/animation/istockphoto-2164339311-612x612.png'),
                       height: 150,
@@ -38,7 +41,7 @@ class SignIn_Screen extends StatelessWidget {
                           .headlineMedium
                           ?.copyWith(color: Colors.black),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 8,
                     ),
                     Text(
@@ -58,43 +61,17 @@ class SignIn_Screen extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 32),
                   child: Column(
                     children: [
-                      TextFormField(
-                        decoration: const InputDecoration(
-                          prefixIcon: Icon(Iconsax.direct_right),
-                          labelText: 'E-Mail',
-                          labelStyle: TextStyle(
-                            color: Colors.black,
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(8),
-                            ),
-                            borderSide: BorderSide(
-                              color: Colors.black,
-                              width: 1.5,
-                            ),
-                          ),
-                        ),
+                      const specialTextField(
+                        label: 'E-Mail',
+                        mainIcon: Iconsax.direct_right,
                       ),
                       const SizedBox(
                         height: 16,
                       ),
-                      TextFormField(
-                        decoration: const InputDecoration(
-                          prefixIcon: Icon(Iconsax.password_check),
-                          labelText: 'Password',
-                          labelStyle: TextStyle(
-                            color: Colors.black,
-                          ),
-                          suffixIcon: Icon(Iconsax.eye_slash),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(8),
-                            ),
-                            borderSide:
-                                BorderSide(color: Colors.black, width: 1.5),
-                          ),
-                        ),
+                      const specialTextField(
+                        label: 'Password',
+                        mainIcon: Iconsax.password_check,
+                        secondIcon: Iconsax.eye_slash,
                       ),
                       const SizedBox(
                         height: 8,
@@ -108,10 +85,9 @@ class SignIn_Screen extends StatelessWidget {
                                 value: false,
                                 onChanged: (value) {},
                               ),
-                              Text('Remeber me'),
+                              const Text('Remeber me'),
                             ],
                           ),
-                          
                         ],
                       ),
                       const SizedBox(
@@ -155,7 +131,6 @@ class SignIn_Screen extends StatelessWidget {
                   ),
                 ),
               ),
-              //divider
             ],
           ),
         ),
