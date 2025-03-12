@@ -4,9 +4,23 @@ import 'package:grad_project/components/TextFormField.dart';
 import 'package:grad_project/screens/AddProfileScreen.dart';
 import 'package:iconsax/iconsax.dart';
 
-class SignUpScreen extends StatelessWidget {
+class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
   static String id = 'signUp';
+
+  @override
+  State<SignUpScreen> createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends State<SignUpScreen> {
+  final TextEditingController Fname = TextEditingController();
+  final TextEditingController Lname = TextEditingController();
+  final TextEditingController Uname = TextEditingController();
+  final TextEditingController email = TextEditingController();
+  final TextEditingController Cnumber = TextEditingController();
+  final TextEditingController pass = TextEditingController();
+
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +31,7 @@ class SignUpScreen extends StatelessWidget {
         iconTheme: const IconThemeData(color: Colors.black),
       ),
       body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         child: Padding(
           padding: const EdgeInsets.all(24),
           child: Column(
@@ -26,150 +40,120 @@ class SignUpScreen extends StatelessWidget {
                 'Let\'s Create Your Account',
                 style: Theme.of(context).textTheme.headlineSmall,
               ),
-
-              const SizedBox(
-                height: 32,
-              ),
-
-              //form
+              const SizedBox(height: 32),
               Form(
+                key: _formKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Row(
+                    Row(
                       children: [
-                        //first name
                         Expanded(
                           child: specialTextField(
                             label: 'First Name',
                             mainIcon: Iconsax.user,
+                            controller: Fname,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your first name';
+                              }
+                              return null;
+                            },
                           ),
                         ),
-
-                        SizedBox(
-                          width: 16,
-                        ),
-
-                        //last name
+                        const SizedBox(width: 16),
                         Expanded(
                           child: specialTextField(
                             label: 'Last Name',
                             mainIcon: Iconsax.user,
+                            controller: Lname,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your last name';
+                              }
+                              return null;
+                            },
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    //username
-
-                    const specialTextField(
+                    const SizedBox(height: 16),
+                    specialTextField(
                       label: 'User Name',
                       mainIcon: Iconsax.user_edit,
+                      controller: Uname,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a username';
+                        }
+                        return null;
+                      },
                     ),
-
-                    const SizedBox(
-                      height: 16,
-                    ),
-
-                    //E-mail
-
-                    const specialTextField(
+                    const SizedBox(height: 16),
+                    specialTextField(
                       label: 'E-Mail',
                       mainIcon: Iconsax.direct,
+                      controller: email,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your email';
+                        }
+                        return null;
+                      },
                     ),
-
-                    const SizedBox(
-                      height: 16,
-                    ),
-
-                    //car number
-                    const specialTextField(
+                    const SizedBox(height: 16),
+                    specialTextField(
                       label: 'Car Number',
                       mainIcon: Iconsax.car,
+                      controller: Cnumber,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your car number';
+                        }
+                        return null;
+                      },
                     ),
-
-                    const SizedBox(
-                      height: 16,
-                    ),
-
-                    //password
-
-                    const specialTextField(
+                    const SizedBox(height: 16),
+                    specialTextField(
                       label: 'Password',
+                      obscure: true,
                       mainIcon: Iconsax.password_check,
                       secondIcon: Iconsax.eye_slash,
+                      controller: pass,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a password';
+                        }
+                        if (value.length < 6) {
+                          return 'Password must be at least 6 characters';
+                        }
+                        return null;
+                      },
                     ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-
-                    //terms and conditions
-
-                    Row(
-                      children: [
-                        SizedBox(
-                          width: 24,
-                          height: 24,
-                          child: Checkbox(
-                            value: true,
-                            onChanged: (value) {},
-                          ),
-                        ),
-                        SizedBox(
-                          width: 16,
-                        ),
-                        Text.rich(
-                          TextSpan(
-                            children: [
-                              TextSpan(
-                                text: 'I agree to ',
-                                style: Theme.of(context).textTheme.bodySmall,
-                              ),
-                              TextSpan(
-                                text: 'Privacy Policy',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium!
-                                    .apply(
-                                        color: Colors.blue,
-                                        decoration: TextDecoration.underline),
-                              ),
-                              TextSpan(
-                                text: ' and ',
-                                style: Theme.of(context).textTheme.bodySmall,
-                              ),
-                              TextSpan(
-                                text: 'Terms of use',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium!
-                                    .apply(
-                                      color: Colors.blue,
-                                      decoration: TextDecoration.underline,
-                                    ),
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-
-                    const SizedBox(
-                      height: 30,
-                    ),
-
-                    //sign up button
-
+                    const SizedBox(height: 30),
                     specialButton(
-                      function: () =>
-                          Navigator.pushNamed(context, AddProfile.id),
+                      function: () {
+                        if (_formKey.currentState!.validate()) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => AddProfile(
+                                firstName: Fname.text.trim(),
+                                lastName: Lname.text.trim(),
+                                username: Uname.text.trim(),
+                                email: email.text.trim(),
+                                carNumber: Cnumber.text.trim(),
+                                pass: pass.text.trim(),
+                              ),
+                            ),
+                          );
+                        }
+                      },
                       text: 'Continue',
-                    )
+                    ),
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ),

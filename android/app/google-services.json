@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "649581495362",
+    "project_id": "drive-monitoring-3e2f9",
+    "storage_bucket": "drive-monitoring-3e2f9.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:649581495362:android:a05e5d1ddcde4e6a23d9db",
+        "android_client_info": {
+          "package_name": "com.example.grad_project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_1LDeJWPXh7ZMz15m3-w_NgAXaQsK0-8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

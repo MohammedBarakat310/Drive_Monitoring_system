@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-// ignore: must_be_immutable
+// ignore: must_be_immutable, camel_case_types
 class specialButton extends StatelessWidget {
-  specialButton({super.key, required this.function, required this.text});
+  const specialButton({super.key, required this.function, required this.text});
   final VoidCallback? function;
   final String text;
   @override

@@ -1,12 +1,85 @@
+import 'dart:developer';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:grad_project/components/TextFormField.dart';
+import 'package:grad_project/screens/HomeScreen.dart';
 import 'package:grad_project/screens/SignUpScreen.dart';
 import 'package:iconsax/iconsax.dart';
 
 // ignore: camel_case_types
-class SignIn_Screen extends StatelessWidget {
+class SignIn_Screen extends StatefulWidget {
   const SignIn_Screen({super.key});
   static String id = 'signIn';
+
+  @override
+  State<SignIn_Screen> createState() => _SignIn_ScreenState();
+}
+
+class _SignIn_ScreenState extends State<SignIn_Screen> {
+  final form = GlobalKey<FormState>();
+  FirebaseAuth auth = FirebaseAuth.instance;
+  bool isloading = false;
+
+  TextEditingController email = TextEditingController();
+  TextEditingController pass = TextEditingController();
+
+  Future<void> signIn() async {
+    setState(() {
+      isloading = true;
+    });
+
+    try {
+      UserCredential user = await auth.signInWithEmailAndPassword(
+        email: email.text.trim(),
+        password: pass.text.trim(),
+      );
+
+      // ignore: use_build_context_synchronously
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => HomeScreen(),
+        ),
+      );
+    } on FirebaseAuthException catch (e) {
+      String errorMessage = '';
+
+      // Handle specific error codes
+      if (e.code == 'user-not-found') {
+        errorMessage = 'The user is not found';
+        log('a');
+      } else if (e.code == 'wrong-password') {
+        errorMessage = 'Wrong password. Please try again';
+        log('b');
+      } else if (e.code == 'invalid-email') {
+        errorMessage = 'The email address is invalid';
+        log('c');
+      } else {
+        errorMessage = '${e.toString()}';
+        log('${e.toString()}');
+      }
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(errorMessage),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } catch (e) {
+      // Handle general errors
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Error: ${e.toString()}"),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } finally {
+      setState(() {
+        isloading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,21 +130,35 @@ class SignIn_Screen extends StatelessWidget {
               //second section
 
               Form(
+                key: form,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 32),
                   child: Column(
                     children: [
-                      const specialTextField(
+                      specialTextField(
                         label: 'E-Mail',
                         mainIcon: Iconsax.direct_right,
+                        controller: email,
+                        validator: (p0) {
+                          if (p0 == null || p0.isEmpty) {
+                            return 'please enter the E-Mail';
+                          }
+                        },
                       ),
                       const SizedBox(
                         height: 16,
                       ),
-                      const specialTextField(
+                      specialTextField(
                         label: 'Password',
                         mainIcon: Iconsax.password_check,
                         secondIcon: Iconsax.eye_slash,
+                        controller: pass,
+                        obscure: true,
+                        validator: (p0) {
+                          if (p0 == null || p0.isEmpty) {
+                            return 'Please enter the password';
+                          }
+                        },
                       ),
                       const SizedBox(
                         height: 8,
@@ -83,7 +170,11 @@ class SignIn_Screen extends StatelessWidget {
                             children: [
                               Checkbox(
                                 value: false,
-                                onChanged: (value) {},
+                                onChanged: (value) {
+                                  setState(() {
+                                    value != value;
+                                  });
+                                },
                               ),
                               const Text('Remeber me'),
                             ],
@@ -93,44 +184,49 @@ class SignIn_Screen extends StatelessWidget {
                       const SizedBox(
                         height: 8,
                       ),
-                      SizedBox(
-                        width: double.infinity,
-                        height: 50,
-                        child: ElevatedButton(
-                          onPressed: () {},
-                          child: Text(
-                            'Sign In',
-                            style: TextStyle(
-                              color: Colors.black.withOpacity(.8),
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 24,
-                      ),
-                      SizedBox(
-                        height: 50,
-                        width: double.infinity,
-                        child: OutlinedButton(
-                          onPressed: () {
-                            Navigator.pushNamed(context, SignUpScreen.id);
-                          },
-                          child: Text(
-                            'Create account',
-                            style: TextStyle(
-                              color: Colors.black.withOpacity(.8),
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 32,
-                      )
                     ],
                   ),
                 ),
               ),
+
+              SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (form.currentState!.validate()) {
+                      signIn();
+                    }
+                  },
+                  child: Text(
+                    isloading ? 'Signing...' : 'Sign In',
+                    style: TextStyle(
+                      color: Colors.black.withOpacity(.8),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 24,
+              ),
+              SizedBox(
+                height: 50,
+                width: double.infinity,
+                child: OutlinedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, SignUpScreen.id);
+                  },
+                  child: Text(
+                    'Create account',
+                    style: TextStyle(
+                      color: Colors.black.withOpacity(.8),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 32,
+              )
             ],
           ),
         ),

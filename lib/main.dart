@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:grad_project/screens/AddProfileScreen.dart';
@@ -6,8 +7,14 @@ import 'package:grad_project/screens/SignUpScreen.dart';
 import 'package:grad_project/screens/onBoarding.dart';
 import 'package:grad_project/screens/splash_screen.dart';
 
-void main() {
-  runApp(const MyApp());
+import 'firebase_options.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -24,7 +31,6 @@ class MyApp extends StatelessWidget {
         onboardingScreen.id: (context) => const onboardingScreen(),
         SignIn_Screen.id: (context) => const SignIn_Screen(),
         SignUpScreen.id: (context) => const SignUpScreen(),
-        AddProfile.id: (context) => const AddProfile(),
       },
       initialRoute: Splash_Screen.id,
     );
