@@ -1,10 +1,8 @@
-import 'dart:developer';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:grad_project/components/TextFormField.dart';
-import 'package:grad_project/screens/HomeScreen.dart';
-import 'package:grad_project/screens/SignUpScreen.dart';
+import 'package:grad_project/screens/Default%20Screens/RootScreen.dart';
+import 'package:grad_project/screens/Login%20and%20Registraion/SignUpScreen.dart';
 import 'package:iconsax/iconsax.dart';
 
 // ignore: camel_case_types
@@ -39,7 +37,7 @@ class _SignIn_ScreenState extends State<SignIn_Screen> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => HomeScreen(),
+          builder: (context) => RootScreen(),
         ),
       );
     } on FirebaseAuthException catch (e) {
@@ -48,16 +46,12 @@ class _SignIn_ScreenState extends State<SignIn_Screen> {
       // Handle specific error codes
       if (e.code == 'user-not-found') {
         errorMessage = 'The user is not found';
-        log('a');
       } else if (e.code == 'wrong-password') {
         errorMessage = 'Wrong password. Please try again';
-        log('b');
       } else if (e.code == 'invalid-email') {
         errorMessage = 'The email address is invalid';
-        log('c');
       } else {
         errorMessage = '${e.toString()}';
-        log('${e.toString()}');
       }
 
       ScaffoldMessenger.of(context).showSnackBar(

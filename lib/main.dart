@@ -1,11 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/get_navigation.dart';
-import 'package:grad_project/screens/AddProfileScreen.dart';
-import 'package:grad_project/screens/SignInScreen.dart';
-import 'package:grad_project/screens/SignUpScreen.dart';
-import 'package:grad_project/screens/onBoarding.dart';
-import 'package:grad_project/screens/splash_screen.dart';
+import 'package:grad_project/screens/Login%20and%20Registraion/SignInScreen.dart';
+import 'package:grad_project/screens/Login%20and%20Registraion/SignUpScreen.dart';
+import 'package:grad_project/screens/Splash%20and%20OnBoarding/onBoarding.dart';
+import 'package:grad_project/screens/Splash%20and%20OnBoarding/splash_screen.dart';
 
 import 'firebase_options.dart';
 

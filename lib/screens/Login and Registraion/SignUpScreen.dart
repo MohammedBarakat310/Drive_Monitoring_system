@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:grad_project/components/SpecialButton.dart';
 import 'package:grad_project/components/TextFormField.dart';
-import 'package:grad_project/screens/AddProfileScreen.dart';
+import 'package:grad_project/screens/Login%20and%20Registraion/AddProfileScreen.dart';
 import 'package:iconsax/iconsax.dart';
 
 class SignUpScreen extends StatefulWidget {

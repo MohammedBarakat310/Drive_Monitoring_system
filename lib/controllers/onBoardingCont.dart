@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:grad_project/screens/SignInScreen.dart';
+import 'package:grad_project/screens/Login%20and%20Registraion/SignInScreen.dart';
 
 class onboardingController extends GetxController {
   static onboardingController get instance => Get.find();

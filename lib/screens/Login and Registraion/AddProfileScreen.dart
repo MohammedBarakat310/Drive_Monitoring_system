@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:grad_project/components/SpecialButton.dart';
 import 'package:grad_project/components/TextFormField.dart';
-import 'package:grad_project/screens/HomeScreen.dart';
+import 'package:grad_project/screens/Default%20Screens/RootScreen.dart';
 import 'package:iconsax/iconsax.dart';
 
 class AddProfile extends StatefulWidget {
@@ -69,7 +69,7 @@ class _AddProfileState extends State<AddProfile> {
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => HomeScreen(),
+            builder: (context) => RootScreen(),
           ));
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
