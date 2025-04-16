@@ -4,6 +4,7 @@ import 'package:grad_project/screens/Default%20Screens/EmergencyScreen.dart';
 import 'package:grad_project/screens/Default%20Screens/HomeScreen.dart';
 import 'package:grad_project/screens/Default%20Screens/LogsScreen.dart';
 import 'package:grad_project/screens/Default%20Screens/profileScreen.dart';
+import 'package:iconsax/iconsax.dart';
 
 class RootScreen extends StatefulWidget {
   const RootScreen({super.key});
@@ -21,7 +22,7 @@ class _RootScreenState extends State<RootScreen> {
     const HomeScreen(),
     const LogsScreen(),
     const EmergencyScreen(),
-    const ProfileScreen()
+    ProfileScreen()
   ];
   @override
   Widget build(BuildContext context) {
@@ -31,6 +32,7 @@ class _RootScreenState extends State<RootScreen> {
       },
       child: Scaffold(
         body: PageView(
+          physics: const NeverScrollableScrollPhysics(),
           controller: pageController,
           children: screens,
           onPageChanged: (value) {
@@ -51,19 +53,19 @@ class _RootScreenState extends State<RootScreen> {
               pageController.jumpToPage(value);
             });
           },
-          textStyle: TextStyle(
+          textStyle: const TextStyle(
             color: Colors.white,
           ),
           tabBackgroundColor: Colors.grey.shade400,
           gap: 8,
-          tabs: [
+          tabs: const [
             GButton(
               icon: Icons.home,
               text: 'Home',
             ),
             GButton(
-              icon: Icons.trip_origin_sharp,
-              text: 'Logs',
+              icon: Iconsax.car,
+              text: 'Trips',
             ),
             GButton(
               icon: Icons.emergency,
