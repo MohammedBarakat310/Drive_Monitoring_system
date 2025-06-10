@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:grad_project/screens/Default%20Screens/EmergencyScreen.dart';
 import 'package:grad_project/screens/Default%20Screens/HomeScreen.dart';
 import 'package:grad_project/screens/Default%20Screens/LogsScreen.dart';
 import 'package:grad_project/screens/Default%20Screens/profileScreen.dart';
@@ -21,8 +20,7 @@ class _RootScreenState extends State<RootScreen> {
   final List<Widget> screens = [
     const HomeScreen(),
     const LogsScreen(),
-    const EmergencyScreen(),
-    ProfileScreen()
+    const ProfileScreen()
   ];
   @override
   Widget build(BuildContext context) {
@@ -66,10 +64,6 @@ class _RootScreenState extends State<RootScreen> {
             GButton(
               icon: Iconsax.car,
               text: 'Trips',
-            ),
-            GButton(
-              icon: Icons.emergency,
-              text: 'Emergency',
             ),
             GButton(
               icon: Icons.settings,
