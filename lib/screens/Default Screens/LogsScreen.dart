@@ -4,6 +4,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:typed_data';
 import 'dart:async';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class LogsScreen extends StatefulWidget {
   const LogsScreen({super.key});
@@ -20,11 +22,19 @@ class _LogsScreenState extends State<LogsScreen> {
   Timer? _captureTimer;
   int _frameCount = 0;
   String _uploadStatus = '';
+  Timer? _warningTimer;
+  String _lastGazeDirection = 'center'; // Default or safe state
+
+  late final AudioPlayer _audioPlayer;
+  DatabaseReference? _gazeRef;
+  StreamSubscription<DatabaseEvent>? _dbSubscription;
 
   @override
   void initState() {
     super.initState();
+    _audioPlayer = AudioPlayer();
     _initializeCamera();
+    _listenToGazeDirection(); // Listen to Realtime Database
   }
 
   Future<void> _initializeCamera() async {
@@ -58,7 +68,6 @@ class _LogsScreenState extends State<LogsScreen> {
         _uploadStatus = 'Camera initialized';
       });
 
-      // Auto start streaming when camera is ready
       _startStreaming();
     } catch (e) {
       setState(() {
@@ -76,7 +85,6 @@ class _LogsScreenState extends State<LogsScreen> {
       _uploadStatus = 'Starting stream...';
     });
 
-    // Capture frames every 2 seconds (adjust as needed)
     _captureTimer = Timer.periodic(const Duration(seconds: 2), (timer) {
       _captureAndUploadFrame();
     });
@@ -94,15 +102,12 @@ class _LogsScreenState extends State<LogsScreen> {
     if (!_isInitialized || _cameraController == null) return;
 
     try {
-      // Capture image
       final XFile image = await _cameraController!.takePicture();
       final Uint8List imageBytes = await image.readAsBytes();
 
-      // Generate unique filename
       final String fileName =
           'frames/frame_${DateTime.now().millisecondsSinceEpoch}_$_frameCount.jpg';
 
-      // Upload to Firebase Storage
       await _uploadToFirebase(imageBytes, fileName);
 
       setState(() {
@@ -121,7 +126,6 @@ class _LogsScreenState extends State<LogsScreen> {
       final FirebaseStorage storage = FirebaseStorage.instance;
       final Reference ref = storage.ref().child(fileName);
 
-      // Upload the file
       final UploadTask uploadTask = ref.putData(
         imageBytes,
         SettableMetadata(
@@ -133,10 +137,7 @@ class _LogsScreenState extends State<LogsScreen> {
         ),
       );
 
-      // Wait for upload to complete
       await uploadTask;
-
-      // Get download URL (optional)
       final String downloadURL = await ref.getDownloadURL();
       print('Frame uploaded: $downloadURL');
     } catch (e) {
@@ -164,10 +165,52 @@ class _LogsScreenState extends State<LogsScreen> {
     setState(() {});
   }
 
+  void _listenToGazeDirection() {
+    _gazeRef = FirebaseDatabase.instance.ref('driver_status/gaze_direction');
+
+    _dbSubscription = _gazeRef!.onValue.listen((DatabaseEvent event) {
+      final data = event.snapshot.value;
+      print('Gaze Direction: $data');
+      if (data != null) {
+        final gazeDirection = data.toString();
+
+        // Only act if gazeDirection changes
+        if (gazeDirection != _lastGazeDirection) {
+          _lastGazeDirection = gazeDirection;
+
+          if (gazeDirection == 'left' || gazeDirection == 'right') {
+            _startWarningTimer();
+          } else {
+            _stopWarningTimer();
+          }
+        }
+      }
+    });
+  }
+
+  void _startWarningTimer() {
+    _warningTimer?.cancel(); // cancel any existing timer
+    _warningTimer = Timer.periodic(const Duration(seconds: 2), (timer) {
+      _playWarningSound();
+    });
+  }
+
+  void _stopWarningTimer() {
+    _warningTimer?.cancel();
+    _warningTimer = null;
+  }
+
+  Future<void> _playWarningSound() async {
+    await _audioPlayer.play(AssetSource('sounds/warning_sound.mp3'));
+  }
+
   @override
   void dispose() {
     _captureTimer?.cancel();
     _cameraController?.dispose();
+    _dbSubscription?.cancel();
+    _warningTimer?.cancel(); // Clean up
+    _audioPlayer.dispose();
     super.dispose();
   }
 
@@ -181,7 +224,6 @@ class _LogsScreenState extends State<LogsScreen> {
       ),
       body: Column(
         children: [
-          // Camera Preview
           Expanded(
             flex: 3,
             child: Container(
@@ -196,8 +238,6 @@ class _LogsScreenState extends State<LogsScreen> {
                     ),
             ),
           ),
-
-          // Status and Controls
           Expanded(
             flex: 1,
             child: Container(
@@ -205,7 +245,6 @@ class _LogsScreenState extends State<LogsScreen> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    // Status Text
                     Text(
                       _uploadStatus,
                       style: const TextStyle(
@@ -213,19 +252,14 @@ class _LogsScreenState extends State<LogsScreen> {
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 8),
-
-                    // Frame Count
                     Text(
                       'Frames captured: $_frameCount',
                       style: const TextStyle(fontSize: 14),
                     ),
                     const SizedBox(height: 16),
-
-                    // Control Buttons
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        // Show "Stop Stream" only if streaming
                         _isStreaming
                             ? ElevatedButton(
                                 onPressed: _stopStreaming,
