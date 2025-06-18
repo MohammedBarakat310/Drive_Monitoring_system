@@ -5,6 +5,7 @@ import 'package:grad_project/screens/Login%20and%20Registraion/SignInScreen.dart
 import 'package:grad_project/screens/Login%20and%20Registraion/SignUpScreen.dart';
 import 'package:grad_project/screens/Splash%20and%20OnBoarding/onBoarding.dart';
 import 'package:grad_project/screens/Splash%20and%20OnBoarding/splash_screen.dart';
+import 'package:grad_project/emergency_service.dart'; // Adjust path as needed
 
 import 'firebase_options.dart';
 
@@ -13,6 +14,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   runApp(MyApp());
 }
 
@@ -25,6 +27,11 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
+      builder: (context, child) {
+        EmergencyService().setContext(context);
+        EmergencyService().startMonitoring(); // Set global context here
+        return child!;
+      },
       routes: {
         Splash_Screen.id: (context) => const Splash_Screen(),
         onboardingScreen.id: (context) => const onboardingScreen(),

@@ -23,7 +23,8 @@ class _LogsScreenState extends State<LogsScreen> {
   int _frameCount = 0;
   String _uploadStatus = '';
   Timer? _warningTimer;
-  String _lastGazeDirection = 'center'; // Default or safe state
+  String _lastGazeDirection = 'center'; // Default safe state
+  String _gazeStatus = 'Waiting for gaze direction...'; // NEW VARIABLE for UI
 
   late final AudioPlayer _audioPlayer;
   DatabaseReference? _gazeRef;
@@ -174,6 +175,17 @@ class _LogsScreenState extends State<LogsScreen> {
       if (data != null) {
         final gazeDirection = data.toString();
 
+        // Update the status text for the UI
+        setState(() {
+          if (gazeDirection == 'left') {
+            _gazeStatus = 'Looking Left';
+          } else if (gazeDirection == 'right') {
+            _gazeStatus = 'Looking Right';
+          } else {
+            _gazeStatus = 'Looking Ahead';
+          }
+        });
+
         // Only act if gazeDirection changes
         if (gazeDirection != _lastGazeDirection) {
           _lastGazeDirection = gazeDirection;
@@ -255,6 +267,11 @@ class _LogsScreenState extends State<LogsScreen> {
                     Text(
                       'Frames captured: $_frameCount',
                       style: const TextStyle(fontSize: 14),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Gaze Direction: $_gazeStatus', // Display Gaze Status here
+                      style: const TextStyle(fontSize: 16, color: Colors.blue),
                     ),
                     const SizedBox(height: 16),
                     Row(
