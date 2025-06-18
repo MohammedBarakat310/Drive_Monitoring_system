@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:grad_project/authWrapper.dart';
 import 'package:grad_project/screens/Login%20and%20Registraion/SignInScreen.dart';
 
 class onboardingController extends GetxController {
@@ -18,7 +19,7 @@ class onboardingController extends GetxController {
 
   void nextPage() {
     if (currentindex.value == 3) {
-      Get.offAll(() => SignIn_Screen());
+      Get.offAll(() => AuthWrapper());
     } else {
       int page = currentindex.value + 1;
       pagecontroller.jumpToPage(page);
@@ -26,6 +27,6 @@ class onboardingController extends GetxController {
   }
 
   void skipPage() {
-    Get.offAll(() => SignIn_Screen());
+    Get.offAll(() => AuthWrapper());
   }
 }

@@ -56,8 +56,14 @@ class _LogsScreenState extends State<LogsScreen> {
         return;
       }
 
+      // Find the front camera first, fallback to first available camera
+      final frontCamera = _cameras!.firstWhere(
+        (camera) => camera.lensDirection == CameraLensDirection.front,
+        orElse: () => _cameras!.first,
+      );
+
       _cameraController = CameraController(
-        _cameras!.first,
+        frontCamera, // Use front camera instead of _cameras!.first
         ResolutionPreset.medium,
         enableAudio: false,
       );
@@ -66,7 +72,7 @@ class _LogsScreenState extends State<LogsScreen> {
 
       setState(() {
         _isInitialized = true;
-        _uploadStatus = 'Camera initialized';
+        _uploadStatus = 'Camera initialized (Front Camera)';
       });
 
       _startStreaming();
@@ -147,17 +153,19 @@ class _LogsScreenState extends State<LogsScreen> {
     }
   }
 
-  void _switchCamera() async {
-    if (_cameras == null || _cameras!.length < 2) return;
+  void _switchToFrontCamera() async {
+    if (_cameras == null || _cameras!.isEmpty) return;
 
-    final currentCameraIndex =
-        _cameras!.indexOf(_cameraController!.description);
-    final newCameraIndex = (currentCameraIndex + 1) % _cameras!.length;
+    // Find the front camera
+    final frontCamera = _cameras!.firstWhere(
+      (camera) => camera.lensDirection == CameraLensDirection.front,
+      orElse: () => _cameras!.first,
+    );
 
     await _cameraController?.dispose();
 
     _cameraController = CameraController(
-      _cameras![newCameraIndex],
+      frontCamera,
       ResolutionPreset.medium,
       enableAudio: false,
     );
@@ -202,7 +210,7 @@ class _LogsScreenState extends State<LogsScreen> {
 
   void _startWarningTimer() {
     _warningTimer?.cancel(); // cancel any existing timer
-    _warningTimer = Timer.periodic(const Duration(seconds: 2), (timer) {
+    _warningTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       _playWarningSound();
     });
   }

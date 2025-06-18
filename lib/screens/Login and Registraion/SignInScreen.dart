@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:grad_project/authWrapper.dart';
 import 'package:grad_project/components/TextFormField.dart';
 import 'package:grad_project/screens/Default%20Screens/RootScreen.dart';
 import 'package:grad_project/screens/Login%20and%20Registraion/SignUpScreen.dart';
@@ -37,7 +38,7 @@ class _SignIn_ScreenState extends State<SignIn_Screen> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => RootScreen(),
+          builder: (context) => AuthWrapper(),
         ),
       );
     } on FirebaseAuthException catch (e) {
