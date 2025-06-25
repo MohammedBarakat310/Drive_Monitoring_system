@@ -60,7 +60,8 @@ dependencies:
   url_launcher: ^6.1.14
   mailer: ^6.4.1
   flutter_phone_direct_caller: ^2.2.1
-
+  flutter_tts: ^4.0.2
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
